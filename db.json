@@ -1,0 +1,20 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "text": "blah"
+    },
+    {
+      "text": "Đi học"
+    },
+    {
+      "text": "Nấu Cơm"
+    },
+    {
+      "text": "Rửa Chén"
+    },
+    {
+      "text": "Đi Học Ở CodersX"
+    }
+  ]
+}
