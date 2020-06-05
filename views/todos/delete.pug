@@ -1,0 +1,5 @@
+h1 Deleting todo ...
+form#delete(action='/todos/:id/delete', method='POST')
+  input(type='hidden', name='id')
+script.
+  document.getElementById("delete").submit()

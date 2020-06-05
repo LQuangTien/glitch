@@ -5,12 +5,13 @@
 // but feel free to use whatever libraries or frameworks you'd like through `package.json`.
 const express = require("express");
 const app = express();
-const bodyParser = require('body-parser')
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
+const bodyParser = require('body-parser');
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+const shortid = require('shortid');
 
-const adapter = new FileSync('db.json')
-const db = low(adapter)
+const adapter = new FileSync('db.json');
+const db = low(adapter);
 
 db.defaults({ todos: []})
   .write()
@@ -53,10 +54,22 @@ app.get("/todos/create", (req, res) => {
   res.render('todos/create')
 })
 app.post("/todos/create", (req, res) => {
+  req.body.id = shortid.generate();
   db.get('todos').push(req.body).write();
   res.redirect('/todos');
 })
 
+app.get("/todos/:id/delete", (req, res) => {
+  let id = req.params.id;
+  res.render('todos/delete',{id: id})
+})
+app.post("/todos/:id/delete", (req, res) => { 
+  let todos= db.get('todos').value()
+  let todo = db.get('todos').find({id: req.body.id}).value();
+  todos.splice(todos.indexOf(todo),1)
+  
+  res.redirect('/todos');
+})
 // listen for requests :)
 app.listen(process.env.PORT, () => {
   console.log("Server listening on port " + process.env.PORT);
