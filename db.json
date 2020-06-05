@@ -1,20 +1,24 @@
 {
   "todos": [
     {
-      "id": 1,
-      "text": "blah"
+      "text": "Đi ăn cơm",
+      "id": "Nu2HF1KPl"
     },
     {
-      "text": "Đi học"
+      "text": "Đi Học Ở CodersX",
+      "id": "1pv7bEr2Q"
     },
     {
-      "text": "Nấu Cơm"
+      "text": "Rửa Chén",
+      "id": "uTnFCpfyZ"
     },
     {
-      "text": "Rửa Chén"
+      "text": "Nấu Cơm",
+      "id": "vr6sn_FIq"
     },
     {
-      "text": "Đi Học Ở CodersX"
+      "text": "Đi ăn cơm",
+      "id": "zCM7Dnst0"
     }
   ]
 }
