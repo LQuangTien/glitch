@@ -4,7 +4,7 @@ block content
     .alert.alert-danger= error
   form(method="POST")
     label Email
-    input.form-control(type="text" name="email")
+    input.form-control(type="text" name="email" value= values ? values.email : "")
     label Password
-    input.form-control(type="password" name="password")
+    input.form-control(type="password" name="password" value= values ? values.password : "")
     button.btn.btn-primary Login

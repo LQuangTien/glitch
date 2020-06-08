@@ -1,8 +1,10 @@
 const shortid = require('shortid');
+const bcrypt = require('bcrypt');
 
 var db = require("../db");
 
-let users = db.get('users').value()
+let users = db.get('users').value();
+const saltRounds = 10;
 
 module.exports.index = (request, response) => {
   response.render('users/index', {
@@ -14,6 +16,8 @@ module.exports.getCreate = (req, res) => {
 }
 module.exports.postCreate = (req, res) => {
   req.body.id = shortid.generate();
+  req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
+  req.body.isAdmin = false;
   db.get('users').push(req.body).write();
   res.redirect('/users');
 }

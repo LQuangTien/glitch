@@ -1,6 +1,7 @@
 var db = require('../db')
 module.exports.postCreate = function(req, res, next) {
   let user = db.get('users').find({email: req.body.email}).value();
+  console.log(user);
   let errors = [];
   
   if(!req.body.name){
@@ -9,10 +10,9 @@ module.exports.postCreate = function(req, res, next) {
   if(req.body.name.length > 30){
     errors.push("Name's length must be smaller than 30");
   }
-  if(user){
+  if(user !== undefined){
     errors.push('Email already exists');
   }
-  console.log(errors)
   if(errors.length){
     res.render('users/create', {
       errors: errors,
