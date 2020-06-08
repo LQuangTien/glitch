@@ -1,0 +1,19 @@
+extends ../layouts/common
+block content
+  h1 
+    span.mr-3 Book List
+    a.btn.btn-primary(href="/books/create") Create new book
+  
+  table.table
+    tr
+      th Tựa Đề
+      th Nội Dung
+      th Options
+    each book in books
+      tr
+        td #{book.title}
+        td #{book.description}
+        td
+          a.btn.btn-light(href="/books/" + book.id +"/delete") Delete
+          span &nbsp
+          a.btn.btn-light(href="/books/" + book.id +"/update") Update

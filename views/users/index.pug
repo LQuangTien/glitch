@@ -1,0 +1,16 @@
+extends ../layouts/common
+block content
+  h1 
+    span.mr-3 User List
+    a.btn.btn-primary(href="/users/create") Create new user
+  table.table
+    tr
+      th Name
+      th Options
+    each user in users
+      tr
+        td= user.name
+        td
+          a.btn.btn-light(href="/users/" + user.id +"/delete") Delete    
+          span &nbsp
+          a.btn.btn-light(href="/users/" + user.id +"/update") Update

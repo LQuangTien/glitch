@@ -1,0 +1,16 @@
+extends ../layouts/common
+block content
+  h1 Transaction Create
+  form(action="/transactions/create" method="POST")
+    label Choose user:
+    select.form-control(name='userid')
+      each user in users
+        option(value=user.id) #{user.name}
+    label Choose a book:
+    select.form-control(name='bookid')
+      each book in books
+        option(value=book.id) #{book.title}
+    br
+    button.btn.btn-primary Create
+
+  

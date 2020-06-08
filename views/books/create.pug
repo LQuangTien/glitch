@@ -1,0 +1,10 @@
+extends ../layouts/common
+block content
+  h1 Create Book
+  form(action="/books/create" method="POST")
+    label Book Title
+    input.form-control(type="text" name="title")
+    label Book Description
+    input.form-control(type="text" name="description")
+    br 
+    button.btn.btn-primary Create
