@@ -32,11 +32,11 @@
       "id": "MwPP9WYrn"
     },
     {
-      "name": "QuangTien",
-      "email": "quangtien",
-      "password": "123123",
+      "name": "user1",
+      "email": "user1",
+      "password": "$2b$10$S0sJg04PUZ5tnGmG/qEeFO8Q18KXEMs6u/1voENkS9uEbjk4cFwtS",
       "isAdmin": false,
-      "id": "0S-_rK4pF"
+      "id": "2Nra11uia"
     }
   ],
   "transactions": [
