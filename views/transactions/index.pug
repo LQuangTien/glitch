@@ -1,0 +1,23 @@
+extends ../layouts/common
+block content
+  
+  h1 
+    span.mr-3 Transaction List
+    a.btn.btn-primary(href="/transactions/create") Create new transaction
+  table.table
+    tr
+      th Transaction ID
+      th isComplete 
+      th(colspan='2') User & Book
+      th Options
+    each tran in transactions
+      tr  
+        td #{tran.id}
+        td #{tran.isComplete}
+        td User ID:  #{tran.userid}
+        td Book ID:  #{tran.bookid}
+        td
+          a.btn.btn-light(href="/transactions/" + tran.id +"/delete") Delete
+          span &nbsp
+          a.btn.btn-light(href="/transactions/" + tran.id +"/complete") Complete
+          

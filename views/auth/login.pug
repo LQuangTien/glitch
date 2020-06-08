@@ -1,0 +1,10 @@
+extends ../layouts/common
+block content
+  if error
+    .alert.alert-danger= error
+  form(method="POST")
+    label Email
+    input.form-control(type="text" name="email")
+    label Password
+    input.form-control(type="password" name="password")
+    button.btn.btn-primary Login

@@ -1,0 +1,15 @@
+extends ../layouts/common
+block content
+  
+  h1 
+    span.mr-3 Transaction List
+  table.table
+    tr
+      th Transaction ID
+      th isComplete 
+      th Book
+    each tran in transactions
+      tr  
+        td #{tran.id}
+        td #{tran.isComplete}
+        td Book ID:  #{tran.bookid}
