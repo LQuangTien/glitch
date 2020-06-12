@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
+
 const saltRounds = 10;
 var db = require('../db')
-let wrongLoginCount = 0
+let wrongLoginCount = 0;
+
 module.exports.postLogin = (req, res, next) => {
   
   let email = req.body.email;
@@ -18,13 +20,14 @@ module.exports.postLogin = (req, res, next) => {
   if(bcrypt.compareSync(password, user.password) === false) {
     wrongLoginCount++;
     console.log(wrongLoginCount)
-    if(wrongLoginCount < 4){
+    if(wrongLoginCount < 3){
       res.render('auth/login',{
+        error: ['Wrong Password'],
         values: req.body
       })
     } else {
-       res.render('auth/login',{
-        error: ['Wrong Password'],
+      res.render('auth/login',{
+        error: ['A mail was send'],
         values: req.body
       })
     }
@@ -33,7 +36,9 @@ module.exports.postLogin = (req, res, next) => {
   }
 
   wrongLoginCount = 0;
-  res.cookie('userid', user.id);
+  res.cookie('userid', user.id, {
+    signed: true
+  });
   next()
 }
   

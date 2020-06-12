@@ -1,10 +1,10 @@
 var db = require('../db')
 module.exports.requireAuth = function(req, res, next){
-  if(!req.cookies.userid){
+  if(!req.signedCookies.userid){
     res.redirect('/auth/login');
     return
   }
-  let user = db.get('users').find({id: req.cookies.userid}).value();
+  let user = db.get('users').find({id: req.signedCookies.userid}).value();
   if(!user) {
     res.redirect('/auth/login');
     return
@@ -14,5 +14,6 @@ module.exports.requireAuth = function(req, res, next){
     res.locals.transactions = transactions;
     res.locals.isAdmin = false;
   } 
+  res.locals.user = user;
   next();
 }

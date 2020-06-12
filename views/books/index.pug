@@ -5,15 +5,64 @@ block content
     a.btn.btn-primary(href="/books/create") Create new book
   
   table.table
-    tr
-      th Tựa Đề
-      th Nội Dung
-      th Options
+    tr.row
+      th.col-4 Tựa Đề
+      th.col-6  Nội Dung
+      th.col-2  Options
     each book in books
-      tr
-        td #{book.title}
-        td #{book.description}
-        td
-          a.btn.btn-light(href="/books/" + book.id +"/delete") Delete
-          span &nbsp
-          a.btn.btn-light(href="/books/" + book.id +"/update") Update
+      tr.row
+        td.col-4 #{book.title}
+        td.col-6 #{book.description}
+        td.col-2
+          a.btn.btn-light(href="/books/" + book.id +"/delete") Delete   
+          a.btn.btn-light.ml-2(href="/books/" + book.id +"/update") Update
+          
+  nav
+    mixin pageItem(number)
+      if(number === 0 )
+        li.page-item.active
+            a.page-link(href="books?page="+ (currentPage + number)) #{currentPage + number}
+      else
+         li.page-item
+            a.page-link(href="books?page="+ (currentPage + number)) #{currentPage + number}
+    mixin lastPageItem(number)
+      if((pages - number) === currentPage )
+        li.page-item.active
+            a.page-link(href="books?page="+ (pages - number)) #{pages - number}
+      else
+        li.page-item
+          a.page-link(href="books?page="+ (pages - number)) #{pages - number}
+    mixin nextprevBtn(condition = 1, name = 'Previous', value = 1) 
+      if currentPage === condition
+          li.page-item.disabled
+            a.page-link(href="#" )= name
+      else
+        li.page-item
+          a.page-link(href="books?page="+ ( currentPage - value))= name
+          
+    ul.pagination.justify-content-center
+      +nextprevBtn()
+      if(currentPage < pages - 2)
+        if(currentPage === 1)
+          +pageItem(0)
+          +pageItem(1)
+          +pageItem(2)
+        else
+          +pageItem(-1)
+          +pageItem(0)
+          +pageItem(1)
+        li.page-item.disabled
+          a.page-link(href="#") ...
+        li.page-item
+          a.page-link(href="books?page="+ pages) #{pages}
+      else if(currentPage > 3)
+        li.page-item
+          a.page-link(href="books?page="+ 1) 1
+        li.page-item.disabled
+          a.page-link(href="#") ...
+        if(currentPage >= pages - 2)
+          +lastPageItem(2)
+          +lastPageItem(1)
+          +lastPageItem(0)
+
+      +nextprevBtn(pages,'Next',-1)    
