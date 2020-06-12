@@ -4,9 +4,14 @@ var db = require("../db");
 
 let books = db.get('books').value();
 
-module.exports.index = (request, response) => {
-  response.render('books/index', {
-    books: books
+module.exports.index = (req, res) => {
+  let page = parseInt(req.query.page) || 1;
+  let perPage = 3;
+  let drop = (page - 1) * perPage;
+  res.render('books/index', {
+    books: db.get('books').drop(drop).take(perPage).value(),
+    pages: Math.ceil((db.get('books').size()/perPage)),
+    currentPage: page
   });
 };
 module.exports.getCreate = (req, res) => {
