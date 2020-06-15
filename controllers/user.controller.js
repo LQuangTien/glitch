@@ -1,6 +1,7 @@
 const shortid = require('shortid');
 const bcrypt = require('bcrypt');
 const cloudinary = require('cloudinary').v2;
+// const User = require('../models/user.model');
 cloudinary.config({
   cloud_name: 'quangtien',
   api_key: '522183711827974',
@@ -17,6 +18,11 @@ module.exports.index = (request, response) => {
   response.render('users/index', {
     users: db.get('users').value()
   });
+  // User.find().then(function(users){
+  //   response.render('users/index', {
+  //     users: users
+  //   })
+  // })
 }
 module.exports.getCreate = (req, res) => {
   res.render('users/create')

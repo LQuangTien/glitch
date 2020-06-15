@@ -3,19 +3,20 @@ block content
   h1 
     span.mr-3 Book List
     a.btn.btn-primary(href="/books/create") Create new book
-  
-  table.table
-    tr.row
-      th.col-4 Tựa Đề
-      th.col-6  Nội Dung
-      th.col-2  Options
+  .row
     each book in books
-      tr.row
-        td.col-4 #{book.title}
-        td.col-6 #{book.description}
-        td.col-2
-          a.btn.btn-light(href="/books/" + book.id +"/delete") Delete   
-          a.btn.btn-light.ml-2(href="/books/" + book.id +"/update") Update
+      .col-sm-6.col-md-4.col-lg-3
+        .carb.mb-3
+          img.card-img-top(src=book.image)
+          .card-body
+            h5.card-title= book.title
+            p.card-text= book.description
+            a.btn.btn-primary(href='/cart/add/' + book.id) Add to cart
+            div.mt-2
+              a.btn.btn-light(href="/books/" + book.id +"/delete") Delete   
+              a.btn.btn-light.ml-2(href="/books/" + book.id +"/update") Update
+
+
           
   nav
     mixin pageItem(number)

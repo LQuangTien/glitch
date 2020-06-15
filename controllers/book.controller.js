@@ -6,7 +6,7 @@ let books = db.get('books').value();
 
 module.exports.index = (req, res) => {
   let page = parseInt(req.query.page) || 1;
-  let perPage = 3;
+  let perPage = 4;
   let drop = (page - 1) * perPage;
   res.render('books/index', {
     books: db.get('books').drop(drop).take(perPage).value(),

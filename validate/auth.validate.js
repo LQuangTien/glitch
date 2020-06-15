@@ -19,7 +19,6 @@ module.exports.postLogin = (req, res, next) => {
   }
   if(bcrypt.compareSync(password, user.password) === false) {
     wrongLoginCount++;
-    console.log(wrongLoginCount)
     if(wrongLoginCount < 3){
       res.render('auth/login',{
         error: ['Wrong Password'],

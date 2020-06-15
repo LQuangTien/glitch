@@ -1,0 +1,16 @@
+extends ../layouts/common
+block content
+  h1 Cart
+  if errors
+    each error in errors
+      .alert.alert-danger= error
+  else
+    table.table
+      tr
+        th Book ID
+        th Amount
+      each amount, bookid in cart
+        tr 
+          td(name='bookid')= bookid
+          td(name='amount')= amount
+    a(href='/cart/payment').btn.btn-primary Submmit
