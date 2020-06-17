@@ -1,33 +1,26 @@
-var db = require('../db')
-const shortid = require('shortid');
-module.exports.addToCart = (req, res) => {
-  let bookId = req.params.bookId;
-  let sessionId = req.signedCookies.sessionId;
+const Session = require('../models/session.model');
+const Transaction = require('../models/transaction.model');
+module.exports.addToCart = async (req, res) => {
+  const bookId = req.params.bookId;
+  const sessionId = req.signedCookies.sessionId;
   if(!sessionId) {
     res.redirect('/books');
     return
   }
-  let count = db
-    .get('sessions')
-    .find({id: sessionId})
-    .get('cart.' + bookId, 0)
-    .value();
-  db.get('sessions')
-    .find({id: sessionId})
-    .set('cart.' + bookId, count + 1)
-    .write();
+  const session = await Session.findById(sessionId);
+  const count = session.cart[bookId] ? session.cart[bookId] : 0;
+  await Session.findByIdAndUpdate(sessionId, {
+    ['cart.' + bookId]: count + 1
+  });
   res.redirect('/books');
 }
-module.exports.getCart = (req, res) => {
-  let sessionId = req.signedCookies.sessionId;
-  let session = db.get('sessions')
-    .find({id: sessionId})
-    .value()
+module.exports.getCart = async (req, res) => {
+  const session = await Session.findById(req.signedCookies.sessionId) 
   res.render('cart/index', {
     cart: session.cart
   })
 }
-module.exports.getPayment = (req, res) => {
+module.exports.getPayment = async (req, res) => {
   let userId = req.signedCookies.userid;
   if(!userId){
     res.render('cart/index', {
@@ -36,17 +29,14 @@ module.exports.getPayment = (req, res) => {
     return;
   }
   let sessionId = req.signedCookies.sessionId;
-  
-  let session = db.get('sessions').find({id: sessionId}).value();
+  let session = await Session.findById(sessionId);
   for(let book in session.cart){
-    db.get('transactions')
-      .push({
-        userid: userId,
-        bookid: book,
-        isComplete: true,
-        id: shortid.generate()
-      })
-      .write()
+    const newTransaction = new Transaction({
+      userid: userId,
+      bookid: book,
+      isComplete: true
+    })  
+    newTransaction.save();
   }
   res.redirect('/books');
 }

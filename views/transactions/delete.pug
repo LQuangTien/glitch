@@ -1,7 +1,6 @@
 extends ../layouts/common
 block content
   h1 Deleting transaction ...
-  form#delete(action='/transactions/:id/delete' method="POST")
-    input(type='hidden', name='id' value=id)
+  form#delete(method="POST")
   script.
     document.getElementById('delete').submit()

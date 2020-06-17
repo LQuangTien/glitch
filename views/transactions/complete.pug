@@ -1,7 +1,6 @@
 extends ../layouts/common
 block content
   h1 Completing transaction ...
-  form#complete(action='/transactions/:id/complete' method="POST")
-    input(type='hidden', name='id' value=id)
+  form#complete(method="POST")
   script.
     document.getElementById('complete').submit()

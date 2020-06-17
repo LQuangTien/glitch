@@ -2,11 +2,12 @@ require('dotenv').config();
 const express = require("express");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const mongoose = require('mongoose');
-// mongoose.connect(process.env.MONGO, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// })
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO, {
+ useNewUrlParser: true,
+ useUnifiedTopology: true,
+ useFindAndModify: false 
+})
 
 const bookRoute = require('./routes/book.route')
 const userRoute = require('./routes/user.route')
@@ -39,7 +40,7 @@ app.use('/api/transactions', apiTransaction);
 app.use('/api/auth', apiLogin);
 app.use('/users', authMiddleware.requireAuth, userRoute);
 app.use('/transactions', authMiddleware.requireAuth, transactionRoute);
-// listen for requests :)
+
 app.listen(process.env.PORT, () => {
   console.log("Server listening on port " + process.env.PORT);
 });

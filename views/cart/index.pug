@@ -9,8 +9,9 @@ block content
       tr
         th Book ID
         th Amount
-      each amount, bookid in cart
-        tr 
-          td(name='bookid')= bookid
-          td(name='amount')= amount
+      if(cart)
+        each amount, bookid in cart
+          tr 
+            td(name='bookid')= bookid
+            td(name='amount')= amount
     a(href='/cart/payment').btn.btn-primary Submmit

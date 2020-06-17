@@ -1,76 +1,65 @@
-const shortid = require('shortid');
 const bcrypt = require('bcrypt');
 const cloudinary = require('cloudinary').v2;
-// const User = require('../models/user.model');
-cloudinary.config({
-  cloud_name: 'quangtien',
-  api_key: '522183711827974',
-  api_secret: 'ECRIZHvQWTtGggILa5j46MzQpi0'
-});
-let defaultAvatar = 'https://res.cloudinary.com/quangtien/image/upload/v1591880216/man_user_person_male_profile_avatar_icon_icon_sl1oaq.png';
+const fs = require('fs');
 
-var db = require("../db");
+const User = require('../models/user.model');
 
-let users = db.get('users').value();
 const saltRounds = 10;
 
-module.exports.index = (request, response) => {
-  response.render('users/index', {
-    users: db.get('users').value()
-  });
-  // User.find().then(function(users){
-  //   response.render('users/index', {
-  //     users: users
-  //   })
-  // })
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+});
+
+module.exports.index = async (req, res) => {
+  let users = await User.find()
+  res.render('users/index', {
+   users: users
+  })
 }
 module.exports.getCreate = (req, res) => {
   res.render('users/create')
 }
 module.exports.postCreate = (req, res) => {
-  req.body.id = shortid.generate();
-  req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
-  req.body.isAdmin = false;
-  req.body.avatar = defaultAvatar;
-  db.get('users').push(req.body).write();
+  let newUser = new User(req.body)
+  newUser.password = bcrypt.hashSync(req.body.password, saltRounds);
+  newUser.save();
   res.redirect('/users');
 }
 module.exports.getDelete = (req, res) => {
-  let id = req.params.id;
-  res.render('users/delete',{id: id}) 
+  res.render('users/delete') 
 }
-module.exports.postDelete = (req, res) => { 
-  let user = db.get('users').find({id: req.body.id}).value();  
-  users.splice(users.indexOf(user),1);
-  db.get('users').write();
+module.exports.postDelete = async (req, res) => { 
+  await User.findOneAndDelete({_id: req.params.id})
   res.redirect('/users');
 }
-module.exports.getProfile = (req, res) => {
-  let user = db.get('users').find({id: req.params.id}).value();  
+module.exports.getProfile = async (req, res) => {
+  let user = await User.findById(req.params.id)
   res.render('users/profile',{
-    id: req.params.id,
     user: user
   }) 
 }
-module.exports.postProfile = (req, res) => { 
-  let user = db.get('users').find({id: req.body.id}).value(); 
-  user.name = req.body.name;
-  user.email = req.body.email;
-  db.get('users').write();
+module.exports.postProfile = async (req, res) => { 
+  await User.findByIdAndUpdate(req.params.id,{
+      name:  req.body.name,
+      email: req.body.email
+  }, {new: true})
   res.redirect('/users');
 }
-module.exports.getAvatar = (req, res) => {
-  let user = db.get('users').find({id: req.params.id}).value();  
+module.exports.getAvatar = async (req, res) => {
+  let user = await User.findById(req.params.id);
   res.render('users/avatar',{
     user: user
   }) 
 }
 module.exports.postAvatar = (req, res) => { 
-  cloudinary.uploader.upload(req.file.path, (err, result) => {
-    db.get('users')
-      .find({id: req.body.id})
-      .assign({avatar: result.url})
-      .write();
+  cloudinary.uploader.upload(req.file.path, async (err, result) => {
+    await User.findByIdAndUpdate(req.body.id, {
+      avatar: result.url
+    })
+  }).then(() => {
+    fs.unlinkSync(req.file.path);
+    res.redirect('/users');
   })
-  res.redirect('/users');
 }

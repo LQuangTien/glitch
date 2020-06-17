@@ -19,20 +19,6 @@ block content
 
           
   nav
-    mixin pageItem(number)
-      if(number === 0 )
-        li.page-item.active
-            a.page-link(href="books?page="+ (currentPage + number)) #{currentPage + number}
-      else
-         li.page-item
-            a.page-link(href="books?page="+ (currentPage + number)) #{currentPage + number}
-    mixin lastPageItem(number)
-      if((pages - number) === currentPage )
-        li.page-item.active
-            a.page-link(href="books?page="+ (pages - number)) #{pages - number}
-      else
-        li.page-item
-          a.page-link(href="books?page="+ (pages - number)) #{pages - number}
     mixin nextprevBtn(condition = 1, name = 'Previous', value = 1) 
       if currentPage === condition
           li.page-item.disabled
@@ -43,27 +29,4 @@ block content
           
     ul.pagination.justify-content-center
       +nextprevBtn()
-      if(currentPage < pages - 2)
-        if(currentPage === 1)
-          +pageItem(0)
-          +pageItem(1)
-          +pageItem(2)
-        else
-          +pageItem(-1)
-          +pageItem(0)
-          +pageItem(1)
-        li.page-item.disabled
-          a.page-link(href="#") ...
-        li.page-item
-          a.page-link(href="books?page="+ pages) #{pages}
-      else if(currentPage > 3)
-        li.page-item
-          a.page-link(href="books?page="+ 1) 1
-        li.page-item.disabled
-          a.page-link(href="#") ...
-        if(currentPage >= pages - 2)
-          +lastPageItem(2)
-          +lastPageItem(1)
-          +lastPageItem(0)
-
       +nextprevBtn(pages,'Next',-1)    

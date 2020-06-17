@@ -1,16 +1,17 @@
-var db = require('../db')
-module.exports.requireAuth = function(req, res, next){
+const User = require('../models/user.model');
+const Transaction = require('../models/transaction.model');
+module.exports.requireAuth = async function(req, res, next){
   if(!req.signedCookies.userid){
     res.redirect('/auth/login');
     return
   }
-  let user = db.get('users').find({id: req.signedCookies.userid}).value();
+  const user = await User.findOne({_id: req.signedCookies.userid})
   if(!user) {
     res.redirect('/auth/login');
     return
   }
   if(!user.isAdmin){ 
-    let transactions = db.get('transactions').filter({userid: user.id}).value();
+    let transactions = await Transaction.find({userid: user.id})
     res.locals.transactions = transactions;
     res.locals.isAdmin = false;
   } 
